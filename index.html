@@ -51,7 +51,7 @@
 <body>
     <div id="slideshow"></div>
     <button id="play-button">Hit it</button>
-    <audio id="audio" src="flirty-cha-cha.mp3" loop preload="auto"></audio>
+    <audio id="audio" loop preload="auto"></audio>
 
     <script>
         const images = [
@@ -64,10 +64,22 @@
             'images/rgsp7.jpg',
         ];
 
+        // List of songs for your random-ass playlist
+        const songs = [
+            'flirty-cha-cha.mp3',
+            'left-bank-two.mp3',
+        ];
+
         const slideshow = document.getElementById('slideshow');
         const playButton = document.getElementById('play-button');
         const audio = document.getElementById('audio');
         let currentIndex = 0;
+
+        // Randomly select a song and set it to the audio player
+        function loadRandomSong() {
+            const randomSong = songs[Math.floor(Math.random() * songs.length)];
+            audio.src = randomSong;
+        }
 
         // Load images into the slideshow container
         images.forEach((img, index) => {
@@ -83,7 +95,6 @@
 
         // Function to generate a 360-degree rotation on X or Y axis
         function rotate360() {
-            // Choose a random axis: 0 for X, 1 for Y
             const axis = Math.random() < 0.5 ? 'X' : 'Y';
             return `rotate${axis}(360deg)`;
         }
@@ -115,6 +126,7 @@
         // Play button functionality
         playButton.addEventListener('click', () => {
             playButton.style.display = 'none'; // Hide the button after clicking
+            loadRandomSong(); // Load a random song before playing
             audio.play().catch(error => {
                 console.log('Autoplay blocked: ' + error);
             });
