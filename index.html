@@ -3,46 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Gallery</title>
+    <title>Dynamic Video Gallery</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
-        video { max-width: 100%; margin: 10px 0; }
         h1 { color: #333; }
+        video { max-width: 100%; margin: 10px 0; }
         .video-item { margin-bottom: 20px; }
     </style>
 </head>
 <body>
-    <h1>Video Gallery</h1>
-    <div id="videoGallery">
-        <!-- Videos will be dynamically listed here -->
-    </div>
+    <h1>Dynamic Video Gallery</h1>
+
+    <h2>Upload Video</h2>
+    <input id="videoTitle" type="text" placeholder="Enter video title"><br>
+    <input id="videoFile" type="file" accept="video/*"><br>
+    <button onclick="uploadVideo()">Upload</button>
+    <p><small>Note: Videos are stored in localStorage and are not truly uploaded. Only videos in the 'videos' folder are persisted.</small></p>
+
+    <h2>Video List</h2>
+    <div id="videoGallery"></div>
 
     <script>
-        // Pre-uploaded videos in the 'videos' folder
-        const videos = [
-            { title: "Amazing Video 1", src: "videos/video1.mp4" },
-            { title: "Awesome Video 2", src: "videos/video2.mp4" },
-            { title: "Cool Video 3", src: "videos/video3.mp4" }
+        // Simulating the "videos" folder with manually predefined files
+        const preloadedVideos = [
+            "videos/video1.mp4",
+            "videos/video2.mp4"
         ];
 
-        const gallery = document.getElementById("videoGallery");
+        function loadVideos() {
+            const gallery = document.getElementById("videoGallery");
+            gallery.innerHTML = ""; // Clear the gallery
 
-        // Loop through videos and create elements dynamically
-        videos.forEach(video => {
-            const videoContainer = document.createElement("div");
-            videoContainer.className = "video-item";
+            // Combine preloaded videos with locally uploaded videos
+            const uploadedVideos = JSON.parse(localStorage.getItem("uploadedVideos") || "[]");
+            const allVideos = [...preloadedVideos, ...uploadedVideos];
 
-            const videoTitle = document.createElement("h3");
-            videoTitle.textContent = video.title;
+            allVideos.forEach(src => {
+                const videoContainer = document.createElement("div");
+                videoContainer.className = "video-item";
 
-            const videoElement = document.createElement("video");
-            videoElement.src = video.src;
-            videoElement.controls = true;
+                const videoElement = document.createElement("video");
+                videoElement.src = src;
+                videoElement.controls = true;
 
-            videoContainer.appendChild(videoTitle);
-            videoContainer.appendChild(videoElement);
-            gallery.appendChild(videoContainer);
-        });
+                videoContainer.appendChild(videoElement);
+                gallery.appendChild(videoContainer);
+            });
+        }
+
+        function uploadVideo() {
+            const fileInput = document.getElementById("videoFile");
+            const videoTitle = document.getElementById("videoTitle").value;
+            const file = fileInput.files[0];
+
+            if (!file || !videoTitle) {
+                alert("Please provide a video file and a title.");
+                return;
+            }
+
+            // Convert file to a local URL
+            const fileURL = URL.createObjectURL(file);
+
+            // Save the uploaded video to localStorage
+            const uploadedVideos = JSON.parse(localStorage.getItem("uploadedVideos") || "[]");
+            uploadedVideos.push(fileURL);
+            localStorage.setItem("uploadedVideos", JSON.stringify(uploadedVideos));
+
+            // Clear the input fields
+            fileInput.value = "";
+            document.getElementById("videoTitle").value = "";
+
+            alert("Video uploaded (to browser memory, not server)!");
+            loadVideos(); // Refresh the gallery
+        }
+
+        // Load videos on page load
+        window.onload = loadVideos;
     </script>
 </body>
 </html>
