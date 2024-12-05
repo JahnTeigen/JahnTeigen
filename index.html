@@ -3,97 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Uploads with Thumbnails</title>
+    <title>Video Gallery</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
-        #videoPreview img { max-width: 200px; max-height: 150px; margin: 10px; cursor: pointer; }
+        video { max-width: 100%; margin: 10px 0; }
+        h1 { color: #333; }
+        .video-item { margin-bottom: 20px; }
     </style>
 </head>
 <body>
-    <h1>Video Uploads with Thumbnails</h1>
-
-    <h2>Upload a Video</h2>
-    <input id="videoTitle" type="text" placeholder="Video Title"><br>
-    <input id="videoFile" type="file" accept="video/*"><br>
-    <button onclick="uploadVideo()">Upload</button>
-
-    <h3>Uploaded Videos:</h3>
-    <div id="videoPreview"></div>
+    <h1>Video Gallery</h1>
+    <div id="videoGallery">
+        <!-- Videos will be dynamically listed here -->
+    </div>
 
     <script>
-        // Mocking a "database" with localStorage because GitHub Pages is useless for this
-        const videosKey = "uploadedVideos";
+        // Pre-uploaded videos in the 'videos' folder
+        const videos = [
+            { title: "Amazing Video 1", src: "videos/video1.mp4" },
+            { title: "Awesome Video 2", src: "videos/video2.mp4" },
+            { title: "Cool Video 3", src: "videos/video3.mp4" }
+        ];
 
-        function getStoredVideos() {
-            return JSON.parse(localStorage.getItem(videosKey)) || [];
-        }
+        const gallery = document.getElementById("videoGallery");
 
-        function saveStoredVideos(videos) {
-            localStorage.setItem(videosKey, JSON.stringify(videos));
-        }
+        // Loop through videos and create elements dynamically
+        videos.forEach(video => {
+            const videoContainer = document.createElement("div");
+            videoContainer.className = "video-item";
 
-        function uploadVideo() {
-            const videoTitle = document.getElementById("videoTitle").value;
-            const videoFile = document.getElementById("videoFile").files[0];
+            const videoTitle = document.createElement("h3");
+            videoTitle.textContent = video.title;
 
-            if (!videoTitle || !videoFile) {
-                alert("Both title and file are required!");
-                return;
-            }
+            const videoElement = document.createElement("video");
+            videoElement.src = video.src;
+            videoElement.controls = true;
 
-            // Read the video file to generate a thumbnail
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                const videoUrl = e.target.result;
-
-                // Generate a thumbnail
-                const videoElement = document.createElement("video");
-                videoElement.src = videoUrl;
-                videoElement.currentTime = 1; // Grab a frame from 1 second
-                videoElement.onloadeddata = function () {
-                    const canvas = document.createElement("canvas");
-                    canvas.width = 200;
-                    canvas.height = 150;
-                    const ctx = canvas.getContext("2d");
-                    ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
-                    const thumbnailUrl = canvas.toDataURL("image/png");
-
-                    // Save to "database"
-                    const videos = getStoredVideos();
-                    videos.push({ title: videoTitle, url: videoUrl, thumbnail: thumbnailUrl });
-                    saveStoredVideos(videos);
-
-                    alert("Video uploaded!");
-                    displayVideos();
-                };
-            };
-            reader.readAsDataURL(videoFile);
-        }
-
-        function displayVideos() {
-            const videos = getStoredVideos();
-            const videoPreview = document.getElementById("videoPreview");
-            videoPreview.innerHTML = "";
-
-            videos.forEach(video => {
-                const thumbnail = document.createElement("img");
-                thumbnail.src = video.thumbnail;
-                thumbnail.alt = video.title;
-                thumbnail.title = video.title;
-                thumbnail.onclick = () => {
-                    const videoPlayer = document.createElement("video");
-                    videoPlayer.src = video.url;
-                    videoPlayer.controls = true;
-                    videoPlayer.style.width = "100%";
-                    alert(video.title); // For debugging
-                    document.body.appendChild(videoPlayer);
-                };
-                videoPreview.appendChild(thumbnail);
-            });
-        }
-
-        // Load videos on page load
-        window.onload = displayVideos;
+            videoContainer.appendChild(videoTitle);
+            videoContainer.appendChild(videoElement);
+            gallery.appendChild(videoContainer);
+        });
     </script>
 </body>
 </html>
