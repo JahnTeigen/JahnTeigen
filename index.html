@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Upload Portal</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <h1>Welcome to the Crappiest Video Upload Portal</h1>
+
+    <div id="loginDiv">
+        <h2>Login</h2>
+        <input id="username" type="text" placeholder="Username"><br>
+        <input id="password" type="password" placeholder="Password"><br>
+        <button onclick="login()">Login</button>
+    </div>
+
+    <div id="uploadDiv" class="hidden">
+        <h2>Upload a Video</h2>
+        <input id="videoTitle" type="text" placeholder="Video Title"><br>
+        <input id="videoFile" type="file" accept="video/*"><br>
+        <button onclick="uploadVideo()">Upload</button>
+        <h3>Uploaded Videos:</h3>
+        <div id="videos"></div>
+    </div>
+
+    <script>
+        let db;
+
+        // Initialize the SQLite database in the browser
+        function initDB() {
+            const openRequest = indexedDB.open("videoDB", 1);
+            
+            openRequest.onupgradeneeded = () => {
+                db = openRequest.result;
+                const store = db.createObjectStore("videos", { keyPath: "id", autoIncrement: true });
+                store.createIndex("title", "title", { unique: false });
+                console.log("Database initialized!");
+            };
+            
+            openRequest.onsuccess = () => {
+                db = openRequest.result;
+                console.log("Database connected!");
+            };
+            
+            openRequest.onerror = () => console.error("Database error:", openRequest.error);
+        }
+
+        // Mock user authentication
+        const users = [
+            { username: "admin", password: "password" }
+        ];
+
+        function login() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            const user = users.find(u => u.username === username && u.password === password);
+            if (user) {
+                document.getElementById("loginDiv").classList.add("hidden");
+                document.getElementById("uploadDiv").classList.remove("hidden");
+            } else {
+                alert("Invalid login!");
+            }
+        }
+
+        // Upload a video
+        function uploadVideo() {
+            const videoTitle = document.getElementById("videoTitle").value;
+            const videoFile = document.getElementById("videoFile").files[0];
+
+            if (!videoTitle || !videoFile) {
+                alert("Both title and file are required!");
+                return;
+            }
+
+            const transaction = db.transaction("videos", "readwrite");
+            const store = transaction.objectStore("videos");
+
+            const videoData = {
+                title: videoTitle,
+                file: videoFile.name
+            };
+
+            store.add(videoData).onsuccess = () => {
+                alert("Video uploaded!");
+                fetchVideos();
+            };
+        }
+
+        // Fetch and display videos
+        function fetchVideos() {
+            const transaction = db.transaction("videos", "readonly");
+            const store = transaction.objectStore("videos");
+            const request = store.getAll();
+
+            request.onsuccess = () => {
+                const videosDiv = document.getElementById("videos");
+                videosDiv.innerHTML = "";
+
+                request.result.forEach(video => {
+                    const videoElement = document.createElement("div");
+                    videoElement.textContent = `Title: ${video.title}, File: ${video.file}`;
+                    videosDiv.appendChild(videoElement);
+                });
+            };
+        }
+
+        initDB();
+    </script>
+</body>
+</html>
