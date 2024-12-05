@@ -38,41 +38,49 @@
 
     <script>
         // Initialize Supabase
-        const SUPABASE_URL = "https://phzpkiwozlbejnyuozmd.supabase.co";
-        const SUPABASE_API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBoenBraXdvemxiZWpueXVvem1kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzMzOTc1MTAsImV4cCI6MjA0ODk3MzUxMH0.ykAh1PC8Q4x0j6r3OHOShb1UmtdVTWkuLU2FrmLN8SA";
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_API_KEY);
+const SUPABASE_URL = "https://phzpkiwozlbejnyuozmd.supabase.co";
+const SUPABASE_API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBoenBraXdvemxiZWpueXVvem1kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzMzOTc1MTAsImV4cCI6MjA0ODk3MzUxMH0.ykAh1PC8Q4x0j6r3OHOShb1UmtdVTWkuLU2FrmLN8SA";
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_API_KEY);
 
-        // Track logged-in user
-        let currentUser = null;
+let currentUser = null; // Ensure this variable is declared at the top
 
-        // Login Function
-        async function login() {
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
+async function login() {
+    try {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
 
-            if (!email || !password) {
-                alert("Please enter both email and password!");
-                return;
-            }
-
-            const { data, error } = await supabase
-                .from("Login")
-                .select("*")
-                .eq("email", email)
-                .eq("password", password)
-                .single();
-
-            if (error || !data) {
-                alert("Invalid email or password!");
-                return;
-            }
-
-            currentUser = data;
-            document.getElementById("loginSection").classList.add("hidden");
-            document.getElementById("videoSection").classList.remove("hidden");
-            document.getElementById("userEmail").textContent = currentUser.email;
-            loadVideos();
+        if (!email || !password) {
+            alert("Please enter both email and password!");
+            return;
         }
+
+        // Query the database for matching user credentials
+        const { data, error } = await supabase
+            .from("Login")
+            .select("*")
+            .eq("email", email)
+            .eq("password", password)
+            .single(); // Ensure only one user is fetched
+
+        if (error || !data) {
+            console.error("Error during login:", error || "No user found");
+            alert("Invalid email or password!");
+            return;
+        }
+
+        // Successful login
+        currentUser = data; // Assign the retrieved user data
+        document.getElementById("loginSection").classList.add("hidden");
+        document.getElementById("videoSection").classList.remove("hidden");
+        document.getElementById("userEmail").textContent = currentUser.email;
+
+        loadVideos(); // Load videos after successful login
+    } catch (err) {
+        console.error("Unhandled error during login:", err);
+        alert("Something went wrong during login. Please try again.");
+    }
+}
+
 
         // Logout Function
         function logout() {
