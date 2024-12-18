@@ -1,0 +1,539 @@
+/* General Styles */
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #121212;
+    color: #FFFFFF;
+    line-height: 1.6;
+}
+
+/* Navbar Styling */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #191921;
+    position: sticky; /* Makes the navbar stick to the top */
+    top: 0; /* Position it at the top */
+    z-index: 1000; /* Ensures it stays above other elements */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Optional shadow for a polished look */
+}
+
+
+/* Navbar links for desktop */
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+}
+
+/* Hamburger menu icon */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    height: 24px;
+    width: 30px;
+}
+
+.hamburger .bar {
+    height: 3px;
+    width: 100%;
+    background-color: #c99fff;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+/* Show hamburger menu on small screens */
+@media (max-width: 768px) {
+    .hamburger {
+        display: flex;
+    }
+
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        flex-direction: column;
+        background-color: #2d2d44;
+        width: 100%;
+        padding: 1rem 0;
+        border-radius: 0 0 10px 10px;
+    }
+
+    .nav-links.show {
+        display: flex;
+    }
+
+    .nav-links li {
+        text-align: center;
+        padding: 0.5rem 0;
+    }
+}
+
+/* Hamburger menu animation when active */
+.hamburger.active .bar:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.active .bar:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.active .bar:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Logo Styling */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.logo-image {
+    width: 80px;
+    height: auto;
+    border-radius: 50%; /* Optional for a rounded logo */
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    background: #BB86FC;
+    color: #121212;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: black;
+}
+
+/* Hero Section */
+#hero {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #4A148C, #121212);
+    color: #FFFFFF;
+    text-align: center;
+}
+
+.hero-content h1 {
+    font-weight: 600;
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.hero-content p {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+.cta-button {
+    background: #BB86FC;
+    color: #121212;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.cta-button:hover {
+    background: #FFFFFF;
+    color: #121212;
+}
+
+a {
+    text-decoration: none;
+    background: #BB86FC;
+    color: #121212;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+a:hover {
+    background: #FFFFFF;
+    color: #121212;
+}
+
+/* Section Styles */
+section {
+    padding: 3rem 2rem;
+}
+
+h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #BB86FC;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.project-card {
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid #4A148C;
+    border-radius: 15px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.project-card:hover {
+    transform: scale(1.05);
+}
+
+/* Contact Form */
+#contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+#contact-form input,
+#contact-form textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #4A148C;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    color: #FFFFFF;
+}
+
+#contact-form button {
+    align-self: flex-start;
+}
+
+/* About Section */
+#about {
+    text-align: center;
+    margin: 2rem 0;
+}
+
+#about h1 {
+    font-size: 2.5rem;
+    color: #c99fff;
+}
+
+/* Team Section */
+#team {
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    width: 80%;
+    margin: auto;
+}
+
+.team-member {
+    text-align: center;
+    background-color: #29293d;
+    border-radius: 10px;
+    padding: 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.team-member:hover {
+    transform: translateY(-10px);
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+.portrait {
+    width: 100%;
+    max-width: 150px;
+    border-radius: 10px;
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.portrait:hover {
+    transform: scale(1.1);
+    filter: brightness(1.2);
+}
+
+.team-member h3 {
+    margin-top: 1rem;
+    color: #c99fff;
+}
+
+.team-member p {
+    margin: 0.5rem 0 0;
+    color: #e0e0e0;
+}
+
+/* Hero Section for Projects */
+#projects-hero {
+    background: linear-gradient(to right, #3a1c71, #d76d77, #ffaf7b);
+    text-align: center;
+    color: white;
+    padding: 3rem 1rem;
+}
+
+#projects-hero .hero-content h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+#projects-hero .hero-content p {
+    font-size: 1.5rem;
+}
+
+/* Showcase Section */
+#showcases {
+    text-align: center;
+    margin: 2rem 0;
+}
+
+#showcases h2 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: #c99fff;
+}
+
+/* Showcase Grid */
+.showcase-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 0 2rem;
+}
+
+/* Showcase Card */
+.showcase-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.showcase-image {
+    max-width: 50%;
+}
+
+/* Quote Section */
+#quotes {
+    padding: 3rem 2rem;
+    background-color: #1E1E1E;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+#quotes h2 {
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+    color: #BB86FC;
+}
+
+/* Quote Container */
+.quote-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 70%;
+    margin: auto;
+}
+
+/* Quote Box */
+.quote-box {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 1.5rem;
+    position: relative;
+    text-align: left;
+}
+
+.quote-box:hover {
+    background-color: #bb86fc20;
+    padding: 1.5rem;
+    position: relative;
+    text-align: left;
+}
+
+.quote-box.left {
+    margin-right: auto;
+    border-left: 5px solid #BB86FC;
+    transition: 0.3s;
+}
+
+.quote-box.left:hover {
+    margin-right: auto;
+    border-left: 8px solid #BB86FC;
+    transition: 0.3s;
+}
+
+.quote-box.right {
+    margin-left: auto;
+    border-right: 5px solid #BB86FC;
+    transition: 0.3s;
+}
+
+.quote-box.right:hover {
+    margin-left: auto;
+    border-right: 8px solid #BB86FC;
+    transition: 0.3s;
+}
+
+.quote-text {
+    font-weight: 600px;
+    font-size: 2.2rem;
+    font-style: italic;
+    margin-bottom: 0.5rem;
+}
+
+.quote-author {
+    text-align: right;
+    font-weight: bold;
+    font-size: 1rem;
+    color: #BB86FC;
+}
+
+/* Project Hero Section */
+#project-hero {
+    background: linear-gradient(to right, #141218, #1e1857, #2b4faf);
+    color: #fff;
+    text-align: center;
+    padding: 3rem 1rem;
+}
+
+.project-logo {
+    width: 50%;
+    margin-bottom: 1rem;
+}
+
+#project-hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+#project-hero p {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+/* Project Overview */
+#project-overview {
+    background: #1E1E1E;
+    color: #FFFFFF;
+    padding: 2rem;
+    text-align: center;
+}
+
+#project-overview h2 {
+    color: #BB86FC;
+    margin-bottom: 1rem;
+}
+
+#project-overview ul {
+    list-style: none;
+    padding: 0;
+}
+
+#project-overview li {
+    margin-bottom: 0.5rem;
+}
+
+/* Project Gallery */
+#project-gallery {
+    padding: 2rem;
+    text-align: center;
+    background: #29293D;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.gallery-image {
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.gallery-image:hover {
+    transform: scale(1.05);
+}
+
+/* Project Team */
+#project-team {
+    padding: 2rem;
+    text-align: center;
+    background: #1E1E1E;
+}
+
+#project-team h2 {
+    margin-bottom: 2rem;
+    color: #BB86FC;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.team-member {
+    background: #29293D;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.portrait {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+}
+
+.team-member h3 {
+    margin: 0;
+    color: #BB86FC;
+}
+
+.team-member p {
+    color: #E0E0E0;
+    margin: 0.5rem 0 0;
+}
+
+
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 1rem;
+    background: #1E1E1E;
+    color: #AAAAAA;
+}
